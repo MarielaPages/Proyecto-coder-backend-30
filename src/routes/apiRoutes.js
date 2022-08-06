@@ -1,9 +1,11 @@
 import { Router } from "express"
 import passport from "passport"
-import yargs from "yargs/yargs"
 import { fork } from 'child_process'
+import os from "os" //libreria nativa de node
 
 const router = Router()
+
+const numCPUs = os.cpus().length //obtengo el numero de cpus en mi compu
 
 //Creo funcion para chequear si el usuario esta autenticado
 function isAuth(req, res, next){
@@ -13,9 +15,6 @@ function isAuth(req, res, next){
         res.render('signIn')
     }
 }
-
-//creo constante args con el objeto que tendra los argumentos de entrada
-const args = yargs(process.argv).default({PORT:8080}).argv
 
 
 router.get('/signUp', (req, res) => {
@@ -59,13 +58,14 @@ router.get('/logout', (req, res) => {
 
 router.get('/info', (req, res) => {
     res.render('info', {
-        argumentosEntrada: args,
+        argumentosEntrada: process.argv[2] || 8081,
         nombrePlataformaSO: process.platform,
         versionNode: process.version,
         memoriaRservada: process.memoryUsage.rss(),
         execPath: process.execPath,
         processId: process.pid,
-        projectFile: process.cwd()
+        projectFile: process.cwd(),
+        numeroProcesadores: numCPUs
     })
 })
 
