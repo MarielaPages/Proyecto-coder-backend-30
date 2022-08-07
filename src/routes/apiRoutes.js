@@ -58,7 +58,7 @@ router.get('/logout', (req, res) => {
 
 router.get('/info', (req, res) => {
     res.render('info', {
-        argumentosEntrada: process.argv[2] || 8081,
+        argumentosEntrada: process.argv[2],
         nombrePlataformaSO: process.platform,
         versionNode: process.version,
         memoriaRservada: process.memoryUsage.rss(),

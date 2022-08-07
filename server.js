@@ -6,6 +6,7 @@ import './src/passport/local.js'
 import './src/mongooseConnection/mongooseConnection.js'
 import apiRoutes from './src/routes/apiRoutes.js'
 import dotenv from 'dotenv'
+import morgan from "morgan" //Para ver los codigos de estado cuando monitorizamos
 //import path from 'path';
 //import { fileURLToPath } from 'url'; --> el de arriba y este son por si quisiera usar __dirname
 //para usar el __dirname hay que hacer un par de configs (ver https://flaviocopes.com/fix-dirname-not-defined-es-module-scope/)
@@ -21,6 +22,7 @@ app.set('views', './src/views')
 app.set('view engine', 'ejs')
 
 //middlewares
+app.use(morgan("dev"))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(session({
@@ -37,7 +39,9 @@ app.use('/datos', apiRoutes)
 
 
 //inicio server
-const PORT = process.argv[2] || 8081
+const PORT = parseInt(process.argv[2]) || 8081
+console.log(process.argv)
+console.log(PORT)
 const server = app.listen(PORT, () => {
     console.log(`Your app is listening on port ${PORT}`)
 })
